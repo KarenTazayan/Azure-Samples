@@ -1,0 +1,3 @@
+az group create --name rg-cae-samples-1 --location francecentral
+az deployment group create --resource-group rg-cae-samples-1 `
+    --template-file azdeploy.bicep --parameters azdeploy.bicepparam

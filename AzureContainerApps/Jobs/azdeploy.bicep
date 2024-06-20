@@ -63,8 +63,8 @@ resource cae 'Microsoft.App/managedEnvironments@2023-05-01' = {
   }
 }
 
-resource job 'Microsoft.App/jobs@2023-05-01' = {
-  name: 'azure-pipelines-agent'
+resource jobEventTrigger 'Microsoft.App/jobs@2023-05-01' = {
+  name: 'azp-agent-event-trigger'
   location: location
   tags: tags
   properties: {
@@ -124,10 +124,72 @@ resource job 'Microsoft.App/jobs@2023-05-01' = {
           env: [
             {
               name: 'AZP_TOKEN'
+              secretRef: 'personal-access-token'
               value: 'secretref:personal-access-token'
             }
             {
               name: 'AZP_URL'
+              secretRef: 'organization-url'
+              value: 'secretref:organization-url'
+            }
+            {
+              name: 'AZP_POOL'
+              value: 'Azure Container Apps'
+            }
+            {
+              name: 'RUN_AGENT_ONCE'
+              value: 'True'
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+
+resource jobManualTrigger 'Microsoft.App/jobs@2023-05-01' = {
+  name: 'azp-agent-manual-trigger'
+  location: location
+  tags: tags
+  properties: {
+    environmentId: cae.id
+    configuration: {
+      triggerType: 'Manual'
+      replicaTimeout: 1800
+      replicaRetryLimit: 0
+      secrets: [
+        {
+          name: 'personal-access-token'
+          value: accessToken
+        }
+        {
+          name: 'organization-url'
+          value: organizationUrl
+        }
+      ]
+      manualTriggerConfig: {
+        parallelism: 1
+        replicaCompletionCount: 1
+      }
+    }
+    template: {
+      containers: [
+        {
+          image: 'asynchub/azure-pipelines-agents-playwright-1.x:1.43.0.13062024'
+          name: 'azure-pipelines-agent'
+          resources: {
+            cpu: 2
+            memory: '4Gi'
+          }
+          env: [
+            {
+              name: 'AZP_TOKEN'
+              secretRef: 'personal-access-token'
+              value: 'secretref:personal-access-token'
+            }
+            {
+              name: 'AZP_URL'
+              secretRef: 'organization-url'
               value: 'secretref:organization-url'
             }
             {

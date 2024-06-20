@@ -35,11 +35,27 @@ resource vnet 'Microsoft.Network/virtualNetworks@2022-05-01' = {
   }
 }
 
+resource log 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
+  name: 'log-${appNamePrefix}-${nameSuffix}'
+  location: location
+  tags: tags
+  properties: {
+    retentionInDays: 30
+  }
+}
+
 resource cae 'Microsoft.App/managedEnvironments@2023-05-01' = {
   name: caeName
   location: location
   tags: tags
   properties: {
+    appLogsConfiguration: {
+      destination: 'log-analytics'
+      logAnalyticsConfiguration: {
+        customerId: log.properties.customerId
+        sharedKey: log.listKeys().primarySharedKey
+      }
+    }
     vnetConfiguration: {
       infrastructureSubnetId: vnet.properties.subnets[0].id
     }

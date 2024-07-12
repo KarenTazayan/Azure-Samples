@@ -1,3 +1,14 @@
 az group create --name rg-vm-sample-1 --location eastus
+
+// Create a regular VM
 az deployment group create --resource-group rg-vm-sample-1 --template-file vm-linux-ubuntu.bicep `
-    --parameters adminUsername=u1 adminPasswordOrKey=Passw@rd1+ vmSize=Standard_B1ms
+    --parameters adminUsername=u1 adminPasswordOrKey=Passw@rd1+ vmSize=Standard_B1ms `
+    --parameters nameSuffix=sample-1
+
+// Create a VM as spot instance
+az vm list-skus --location francecentral --size Standard_A --output table
+az group delete --name rg-vm-sample-2 --yes
+az group create --name rg-vm-sample-2 --location francecentral
+az deployment group create --resource-group rg-vm-sample-2 --template-file vm-linux-ubuntu.bicep `
+    --parameters adminUsername=u1 adminPasswordOrKey=Passw@rd1+ vmSize=Standard_A2_v2 `
+    --parameters nameSuffix=sample-2 spotPriority=Spot

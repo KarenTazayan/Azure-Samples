@@ -1,5 +1,7 @@
+param nameSuffix string = 'sample-1'
+
 @description('The name of your Virtual Machine.')
-param vmName string = 'vm-sample-1'
+param vmName string = 'vm-${nameSuffix}'
 
 @description('Username for the Virtual Machine.')
 param adminUsername string
@@ -31,14 +33,22 @@ param location string = resourceGroup().location
 @description('The size of the VM')
 param vmSize string = 'Standard_B1ms'
 
+@description('Specifies the priority for the virtual machine.')
+@allowed([
+  'Low'
+  'Regular'
+  'Spot'
+])
+param spotPriority string = 'Regular'
+
 @description('Name of the VNET')
-param virtualNetworkName string = 'vnet-sample-1'
+param virtualNetworkName string = 'vnet-${nameSuffix}'
 
 @description('Name of the subnet in the virtual network')
 param subnetName string = 'snet-1'
 
 @description('Name of the Network Security Group')
-param networkSecurityGroupName string = 'nsg-sample-1'
+param networkSecurityGroupName string = 'nsg-${nameSuffix}'
 
 @description('Security Type of the Virtual Machine.')
 @allowed([
@@ -61,8 +71,8 @@ var imageReference = {
     version: 'latest'
   }
 }
-var publicIPAddressName = 'pip-sample-1'
-var networkInterfaceName = 'nic-sample-1'
+var publicIPAddressName = 'pip-${nameSuffix}'
+var networkInterfaceName = 'nic-${nameSuffix}'
 var osDiskType = 'Standard_LRS'
 var subnetAddressPrefix = '10.1.0.0/24'
 var addressPrefix = '10.1.0.0/16'
@@ -204,6 +214,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2023-09-01' = {
       linuxConfiguration: ((authenticationType == 'password') ? null : linuxConfiguration)
     }
     securityProfile: (securityType == 'TrustedLaunch') ? securityProfileJson : null
+    priority: spotPriority
   }
 }
 

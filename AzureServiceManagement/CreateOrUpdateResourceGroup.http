@@ -1,0 +1,8 @@
+PUT https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg-sample-1?api-version=2021-04-01
+Authorization: Bearer <AccesToken>
+Content-Type: application/json
+Host: management.azure.com
+
+{
+  "location": "eastus"
+}

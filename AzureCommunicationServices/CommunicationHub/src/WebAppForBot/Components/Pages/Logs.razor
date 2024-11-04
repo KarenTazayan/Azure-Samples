@@ -1,0 +1,14 @@
+﻿@page "/logs"
+
+<PageTitle>Logs</PageTitle>
+
+<h5>Real-time Logs</h5>
+
+<div>
+    <ul>
+    @foreach (var log in _logs)
+    {
+        <li>@log</li>
+    }
+    </ul>
+</div>

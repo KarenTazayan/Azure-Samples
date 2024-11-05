@@ -1,18 +1,54 @@
 ﻿using Azure.Communication;
 using Azure.Communication.Chat;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace ACS.Chat;
 
-internal class MicrosoftTeamsChatInteroperability
+public class MicrosoftTeamsChatInteroperability
 {
     private readonly ChatClient _chatClient;
     private string _chatThreadId = string.Empty;
+    private readonly string _accessToken;
 
     public MicrosoftTeamsChatInteroperability(string acsEndpointUrl, string userAccessTokenForChat)
     {
         var acsEndpoint = new Uri(acsEndpointUrl);
         var communicationTokenCredential = new CommunicationTokenCredential(userAccessTokenForChat);
         _chatClient = new ChatClient(acsEndpoint, communicationTokenCredential);
+        _accessToken = userAccessTokenForChat;
+    }
+
+    private static string ExtractResourceIdFromToken(string token)
+    {
+        // Initialize the JsonWebTokenHandler
+        var handler = new JsonWebTokenHandler();
+
+        // Read the token as a JsonWebToken
+        var jwtToken = handler.ReadJsonWebToken(token);
+
+        // Retrieve the "resourceId" claim
+        var resourceId = jwtToken.GetClaim("resourceId")?.Value;
+
+        if (string.IsNullOrWhiteSpace(resourceId))
+        {
+            throw new InvalidOperationException("No value for claim resourceId.");
+        }
+
+        return resourceId;
+    }
+
+    private static string ExtractSkypeIdFromToken(string token)
+    {
+        // Initialize the JsonWebTokenHandler
+        var handler = new JsonWebTokenHandler();
+
+        // Read the token as a JsonWebToken
+        var jwtToken = handler.ReadJsonWebToken(token);
+
+        // Retrieve the "skypeid" claim
+        var skypeId = jwtToken.GetClaim("skypeid")?.Value;
+
+        return skypeId ?? "skypeid not found";
     }
 
     public void ChangeChatThreadId(string newChatThreadId)
@@ -24,11 +60,11 @@ internal class MicrosoftTeamsChatInteroperability
     {
         if(!string.IsNullOrWhiteSpace(_chatThreadId)) return _chatThreadId;
 
-        var id = "8:acs:xxx";
+        var id = $"8:{ExtractSkypeIdFromToken(_accessToken)}";
 
         var chatParticipant = new ChatParticipant(identifier: new CommunicationUserIdentifier(id))
         {
-            DisplayName = "John Smith"
+            DisplayName = "Topic Owner"
         };
 
         CreateChatThreadResult createChatThreadResult = 
@@ -38,18 +74,33 @@ internal class MicrosoftTeamsChatInteroperability
         return _chatThreadId;
     }
 
-    public void AddUserToChatThread(string participantId, string displayName = "")
+    public void AddUserToChatThread(string displayName)
     {
-        var teamUser = new CommunicationUserIdentifier(participantId);
-        var teamUserChatParticipant = new ChatParticipant(teamUser);
+        var participantId = $"8:acs:{ExtractResourceIdFromToken(_accessToken)}_{Guid.NewGuid()}";
+        var user = new CommunicationUserIdentifier(participantId);
+        var chatParticipant = new ChatParticipant(user);
 
         if (!string.IsNullOrWhiteSpace(displayName))
         {
-            teamUserChatParticipant.DisplayName = displayName;
+            chatParticipant.DisplayName = displayName;
         }
 
         var chatThreadClient = _chatClient.GetChatThreadClient(_chatThreadId);
-        chatThreadClient.AddParticipant(teamUserChatParticipant);
+        chatThreadClient.AddParticipant(chatParticipant);
+    }
+
+    public void AddUserToChatThread(string participantId, string displayName)
+    {
+        var user = new CommunicationUserIdentifier(participantId);
+        var chatParticipant = new ChatParticipant(user);
+
+        if (!string.IsNullOrWhiteSpace(displayName))
+        {
+            chatParticipant.DisplayName = displayName;
+        }
+
+        var chatThreadClient = _chatClient.GetChatThreadClient(_chatThreadId);
+        chatThreadClient.AddParticipant(chatParticipant);
     }
 
     /// <summary>
@@ -84,15 +135,18 @@ internal class MicrosoftTeamsChatInteroperability
         return sendChatMessageResult.Id;
     }
 
-    public async Task ListParticipantsAsync()
+    public async Task<List<(string User, string? DisplayName)>> ListParticipantsAsync()
     {
         var chatThreadClient = _chatClient.GetChatThreadClient(_chatThreadId);
+        var participants = new List<(string User, string? DisplayName)>();
         var list = chatThreadClient.GetParticipantsAsync();
+
         await foreach (var item in list)
         {
-            Console.WriteLine(item.User);
-            Console.WriteLine(item.DisplayName);
+            participants.Add((item.User.ToString(), item.DisplayName)!);
         }
+
+        return participants;
     }
 
     public async Task ListMessagesAsync()

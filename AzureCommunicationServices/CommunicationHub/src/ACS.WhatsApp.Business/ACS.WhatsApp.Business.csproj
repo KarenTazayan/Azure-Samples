@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Telegram.Bot" Version="22.0.2" />
+    <PackageReference Include="Azure.Communication.Messages" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>

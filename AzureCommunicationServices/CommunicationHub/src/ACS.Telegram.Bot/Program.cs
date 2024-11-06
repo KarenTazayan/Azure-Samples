@@ -4,14 +4,15 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
-var threadId = "";
-// Your unique Communication Services endpoint
-var acsEndpointUrl = "https://xxx.communication.azure.com/";
-// Your unique ACS access token
-var userAccessTokenForChat =
-    "";
+Console.Title = "ACS.Telegram.Bot";
 
-string botToken = "";  // Replace with your bot token
+// Your unique Communication Services endpoint
+var acsEndpointUrl = CurrentCredentials.AcsCredential.AcsEndpointUrl;
+// Your unique ACS access token
+var userAccessTokenForChat = CurrentCredentials.AcsCredential.UserAccessTokenForChat;
+var acsChatThreadId = CurrentCredentials.AcsChatThreadId;
+
+var botToken = CurrentCredentials.TelegramBotToken;
 var botClient = new TelegramBotClient(botToken);
 
 // Start receiving messages
@@ -23,7 +24,7 @@ var receiverOptions = new ReceiverOptions
 
 var microsoftTeamsChatInteroperability =
     new MicrosoftTeamsChatInteroperability(acsEndpointUrl, userAccessTokenForChat);
-microsoftTeamsChatInteroperability.ChangeChatThreadId(threadId);
+microsoftTeamsChatInteroperability.ChangeChatThreadId(acsChatThreadId);
 
 botClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync, receiverOptions, cancellationTokenSource.Token);
 

@@ -9,9 +9,9 @@ using Azure.Communication.Chat;
 const string botACSId = "";
 
 // Your unique Communication Services endpoint
-var acsEndpointUrl = "https://xxx.communication.azure.com/";
+var acsEndpointUrl = CurrentCredentials.AcsCredential.AcsEndpointUrl;
 // Your unique ACS access token
-var userAccessTokenForChat = "";
+var userAccessTokenForChat = CurrentCredentials.AcsCredential.UserAccessTokenForChat;
 
 // List chat threads.
 var communicationTokenCredential = new CommunicationTokenCredential(userAccessTokenForChat);

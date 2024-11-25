@@ -14,11 +14,26 @@ Console.Title = "ACS.HandleAdvancedMessagingEvents";
 // Your unique Communication Services endpoint
 var acsEndpointUrl = CurrentCredentials.AcsCredential.AcsEndpointUrl;
 // Your unique ACS access token
-var userAccessTokenForChat = CurrentCredentials.AcsCredential.UserAccessTokenForChat;
+// WhatsApp User Access Token
+var userAccessTokenForChat = "";
 var acsChatThreadId = CurrentCredentials.AcsChatThreadId;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
+
+// Event Subscription Endpoint validation
+app.Use(async (context, next) =>
+{
+    if (context.Request.Method == HttpMethods.Options)
+    {
+        context.Response.Headers.Add("Allow", "GET, POST");
+        context.Response.Headers.Add("WebHook-Request-Origin", "*");
+        context.Response.StatusCode = (int)HttpStatusCode.OK;
+        return;
+    }
+
+    await next.Invoke();
+});
 
 app.MapGet("/", () => "Working...");
 

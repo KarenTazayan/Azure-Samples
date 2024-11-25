@@ -9,7 +9,8 @@ Console.Title = "ACS.Telegram.Bot";
 // Your unique Communication Services endpoint
 var acsEndpointUrl = CurrentCredentials.AcsCredential.AcsEndpointUrl;
 // Your unique ACS access token
-var userAccessTokenForChat = CurrentCredentials.AcsCredential.UserAccessTokenForChat;
+// Telegram User Access Token
+var userAccessTokenForChat = "";
 var acsChatThreadId = CurrentCredentials.AcsChatThreadId;
 
 var botToken = CurrentCredentials.TelegramBotToken;

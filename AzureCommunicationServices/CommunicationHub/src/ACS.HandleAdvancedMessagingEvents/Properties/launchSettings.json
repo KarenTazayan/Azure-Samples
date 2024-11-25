@@ -1,12 +1,13 @@
 {
   "profiles": {
-    "ACS.HandleAdvancedMessagingEvents": {
+    "https": {
       "commandName": "Project",
+      "dotnetRunMessages": true,
       "launchBrowser": true,
+      "applicationUrl": "https://localhost:7085",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:55860;http://localhost:55861"
+      }
     }
   }
 }

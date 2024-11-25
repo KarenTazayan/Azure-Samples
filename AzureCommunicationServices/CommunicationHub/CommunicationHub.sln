@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACS.Chat.App", "src\ACS.Cha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACS.Telegram.Bot", "src\ACS.Telegram.Bot\ACS.Telegram.Bot.csproj", "{EC4AB727-E6B8-48DA-88E3-F8DC95AB4743}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACS.WhatsApp.Business", "src\ACS.WhatsApp.Business\ACS.WhatsApp.Business.csproj", "{A541401B-5919-4A23-A964-8567A5BDB88A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACS.WhatsApp.Business", "src\ACS.WhatsApp.Business\ACS.WhatsApp.Business.csproj", "{A541401B-5919-4A23-A964-8567A5BDB88A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACS.Mattermost.Api", "src\ACS.Mattermost.Api\ACS.Mattermost.Api.csproj", "{13E7BC87-96B8-4846-AEEF-6DF7C1481D17}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{A541401B-5919-4A23-A964-8567A5BDB88A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A541401B-5919-4A23-A964-8567A5BDB88A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A541401B-5919-4A23-A964-8567A5BDB88A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13E7BC87-96B8-4846-AEEF-6DF7C1481D17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13E7BC87-96B8-4846-AEEF-6DF7C1481D17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13E7BC87-96B8-4846-AEEF-6DF7C1481D17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13E7BC87-96B8-4846-AEEF-6DF7C1481D17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +71,7 @@ Global
 		{DF6997D2-FFF2-4242-BE5D-0A8836474EFB} = {99174EBB-9595-409F-B7DA-FF001172CC4B}
 		{EC4AB727-E6B8-48DA-88E3-F8DC95AB4743} = {99174EBB-9595-409F-B7DA-FF001172CC4B}
 		{A541401B-5919-4A23-A964-8567A5BDB88A} = {99174EBB-9595-409F-B7DA-FF001172CC4B}
+		{13E7BC87-96B8-4846-AEEF-6DF7C1481D17} = {99174EBB-9595-409F-B7DA-FF001172CC4B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {13B26E06-59CB-4506-B6E5-86C75DFA7317}

@@ -5,7 +5,7 @@ using ACS.Chat;
 using Azure;
 using Azure.Communication.Messages;
 
-Console.Title = "ACS.Telegram.Bot";
+Console.Title = "ACS.WhatsApp.Business";
 
 var connectionString = CurrentCredentials.AcsConnectionString;
 

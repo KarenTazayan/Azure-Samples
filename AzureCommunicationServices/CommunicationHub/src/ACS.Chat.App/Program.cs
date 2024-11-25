@@ -57,8 +57,15 @@ while (true)
             new MicrosoftTeamsChatInteroperability(acsEndpointUrl, userAccessTokenForChat);
         microsoftTeamsChatInteroperability.ChangeChatThreadId(input);
 
-        await microsoftTeamsChatInteroperability.ListParticipantsAsync();
-        await microsoftTeamsChatInteroperability.ListMessagesAsync();
+        //microsoftTeamsChatInteroperability.AddUserToChatThread("8:acs:383d9c6a-d810-468d-ae7d-ae9fc100ca4c_00000023-c5f1-9d98-65f0-ad3a0d0056ee", "Mattermost User");
+
+        var participants = await microsoftTeamsChatInteroperability.ListParticipantsAsync();
+        foreach (var participant in participants)
+        {
+            Console.WriteLine($"{participant.User} {participant.DisplayName}");
+        }
+
+        //await microsoftTeamsChatInteroperability.ListMessagesAsync();
     }
 
     if (input == "exit")

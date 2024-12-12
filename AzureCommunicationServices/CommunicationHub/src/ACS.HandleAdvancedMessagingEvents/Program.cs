@@ -3,11 +3,14 @@
 
 using ACS.Chat;
 using ACS.HandleAdvancedMessagingEvents;
+using Azure;
 using Azure.Messaging.EventGrid;
 using Azure.Messaging.EventGrid.SystemEvents;
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using Azure.Communication.Messages;
+using Telegram.Bot;
 
 Console.Title = "ACS.HandleAdvancedMessagingEvents";
 
@@ -85,6 +88,60 @@ app.Map("/api/eventgrid", async (HttpContext context, ILogger<Program> logger) =
 
             Console.WriteLine($"Received message: {advancedMessage.Content} from chat {advancedMessage.From}");
             await microsoftTeamsChatInteroperability.SendMessageToChatThreadAsync(advancedMessage.Content);
+
+            context.Response.StatusCode = (int)HttpStatusCode.OK;
+            return;
+        }
+
+        if (eventGridEvent.EventType == "Microsoft.Communication.ChatMessageReceivedInThread")
+        {
+            var json = eventGridEvent.Data.ToString();//.Replace("{{", "{").Replace("}}", "}");
+            var advancedMessage = JsonSerializer.Deserialize<ChatMessageInThread>(json, new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            var messageText = advancedMessage.MessageBody.Replace("<p>", "").Replace("</p>", "");
+
+            if (CurrentCredentials.AcsUsers.Single(u => u.Type == "WhatsApp User").UserId !=
+                advancedMessage.SenderCommunicationIdentifier.RawId)
+            {
+                // "ACS.WhatsApp.Business";
+
+                var connectionString = CurrentCredentials.AcsConnectionString;
+
+                // Instantiate the client
+                var notificationMessagesClient = new NotificationMessagesClient(connectionString);
+
+                // Your channel registration ID GUID
+                var channelRegistrationId = new Guid(CurrentCredentials.WhatsAppChannelRegistrationId);
+                var recipientList = new List<string> { CurrentCredentials.WhatsAppRecipient };
+
+                // Send a text message
+                var textContent = new TextNotificationContent(channelRegistrationId, recipientList, messageText);
+                Response<SendMessageResult> sendTextMessageResult = await notificationMessagesClient.SendAsync(textContent);
+            }
+
+            if (CurrentCredentials.AcsUsers.Single(u => u.Type == "Telegram User").UserId !=
+                advancedMessage.SenderCommunicationIdentifier.RawId)
+            {
+                var botToken = CurrentCredentials.TelegramBotToken;
+                var botClient = new TelegramBotClient(botToken);
+
+                await botClient.SendMessage(
+                    chatId: "7849784244",
+                    text: messageText);
+            }
+
+            if (CurrentCredentials.AcsUsers.Single(u => u.Type == "Mattermost User").UserId !=
+                advancedMessage.SenderCommunicationIdentifier.RawId)
+            {
+                string mattermostBaseUrl = "https://mattermost-sample.westeurope.cloudapp.azure.com";
+                string accessToken = "jqxpkmjrdinfur5k4fgnw9byyh";
+                string channelId = "p9zp4t3bsjn8pe3st8sof7w31e";
+
+                await MattermostApi.SendMessageToMattermost(mattermostBaseUrl, accessToken, channelId, messageText);
+            }
 
             context.Response.StatusCode = (int)HttpStatusCode.OK;
             return;

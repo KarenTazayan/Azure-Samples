@@ -1,5 +1,3 @@
 ﻿namespace ACS.Chat;
 
-public record AcsCredential(string AcsEndpointUrl, string UserAccessTokenForChat)
-{
-}
+public record AcsCredential(string AcsEndpointUrl, string UserAccessTokenForChat);

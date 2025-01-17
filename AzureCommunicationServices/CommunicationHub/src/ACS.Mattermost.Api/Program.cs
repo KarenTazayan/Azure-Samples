@@ -9,12 +9,11 @@ Console.Title = "ACS.Mattermost.Api";
 var acsEndpointUrl = CurrentCredentials.AcsCredential.AcsEndpointUrl;
 // Your unique ACS access token
 // Mattermost User Access Token
-var userAccessTokenForChat = "";
+var userAccessTokenForChat = CurrentCredentials.MattermostUser.UserAccessToken;
 var acsChatThreadId = CurrentCredentials.AcsChatThreadId;
 
-var microsoftTeamsChatInteroperability =
-    new MicrosoftTeamsChatInteroperability(acsEndpointUrl, userAccessTokenForChat);
-microsoftTeamsChatInteroperability.ChangeChatThreadId(acsChatThreadId);
+var chatManager = new AcsChatManager(acsEndpointUrl, userAccessTokenForChat);
+chatManager.ChangeChatThreadId(acsChatThreadId);
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
@@ -34,7 +33,7 @@ app.MapPost("/", async (HttpContext context, ILogger<Program> logger) =>
 
     Console.WriteLine($"From: {mattermostEvent?.UserName} Message: {mattermostEvent?.Text}");
 
-    await microsoftTeamsChatInteroperability.SendMessageToChatThreadAsync(mattermostEvent.Text);
+    await chatManager.SendMessageToChatThreadAsync(mattermostEvent.Text);
 
     context.Response.StatusCode = 200;
     await context.Response.CompleteAsync();

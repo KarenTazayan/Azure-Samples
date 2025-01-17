@@ -8,9 +8,10 @@ Console.Title = "ACS.Telegram.Bot";
 
 // Your unique Communication Services endpoint
 var acsEndpointUrl = CurrentCredentials.AcsCredential.AcsEndpointUrl;
+
 // Your unique ACS access token
 // Telegram User Access Token
-var userAccessTokenForChat = "";
+var userAccessTokenForChat = CurrentCredentials.TelegramUser.UserAccessToken;
 var acsChatThreadId = CurrentCredentials.AcsChatThreadId;
 
 var botToken = CurrentCredentials.TelegramBotToken;
@@ -23,9 +24,9 @@ var receiverOptions = new ReceiverOptions
     AllowedUpdates = [] // Receive all update types
 };
 
-var microsoftTeamsChatInteroperability =
-    new MicrosoftTeamsChatInteroperability(acsEndpointUrl, userAccessTokenForChat);
-microsoftTeamsChatInteroperability.ChangeChatThreadId(acsChatThreadId);
+var chatManager =
+    new AcsChatManager(acsEndpointUrl, userAccessTokenForChat);
+chatManager.ChangeChatThreadId(acsChatThreadId);
 
 botClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync, receiverOptions, cancellationTokenSource.Token);
 
@@ -37,7 +38,7 @@ cancellationTokenSource.Cancel();
 return;
 
 // Method to handle updates (messages from users)
-async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+async Task HandleUpdateAsync(ITelegramBotClient telegramBotClient, Update update, CancellationToken cancellationToken)
 {
     // Ensure we handle only messages
     if (update is { Type: UpdateType.Message, Message.Text: not null })
@@ -46,18 +47,18 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
         var messageText = update.Message.Text;
         var displayName = $"{update.Message.From?.FirstName} {update.Message.From?.LastName}";
 
-        var participants = await microsoftTeamsChatInteroperability.ListParticipantsAsync();
+        //var participants = await chatManager.ListParticipantsAsync();
 
-        if (!participants.Any(p => displayName.Equals(p.DisplayName)))
-        {
-            microsoftTeamsChatInteroperability.AddUserToChatThread(displayName);
-        }
+        //if (!participants.Any(p => displayName.Equals(p.DisplayName)))
+        //{
+        //    chatManager.AddUserToChatThread(displayName);
+        //}
 
         Console.WriteLine($"Received message: {messageText} from chat {chatId}");
-        await microsoftTeamsChatInteroperability.SendMessageToChatThreadAsync(messageText);
+        await chatManager.SendMessageToChatThreadAsync(messageText);
 
         // Reply to the message
-        await botClient.SendMessage(
+        await telegramBotClient.SendMessage(
             chatId: chatId,
             text: $"You said: {messageText}",
             cancellationToken: cancellationToken
@@ -66,7 +67,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 }
 
 // Method to handle errors
-Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+Task HandleErrorAsync(ITelegramBotClient telegramBotClient, Exception exception, CancellationToken cancellationToken)
 {
     Console.WriteLine($"An error occurred: {exception.Message}");
     return Task.CompletedTask;

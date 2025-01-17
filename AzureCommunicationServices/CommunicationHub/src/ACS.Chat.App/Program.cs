@@ -1,6 +1,9 @@
 ﻿// Quickstart: Add a bot to your chat app
 // https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/chat/quickstart-botframework-integration
 
+// Enable interoperability in your Teams tenant
+// https://learn.microsoft.com/en-us/azure/communication-services/concepts/interop/calling-chat
+
 using ACS.Chat;
 using Azure.Communication;
 using Azure.Communication.Chat;
@@ -11,7 +14,7 @@ const string botACSId = "";
 // Your unique Communication Services endpoint
 var acsEndpointUrl = CurrentCredentials.AcsCredential.AcsEndpointUrl;
 // Your unique ACS access token
-var userAccessTokenForChat = CurrentCredentials.AcsCredential.UserAccessTokenForChat;
+var userAccessTokenForChat = CurrentCredentials.TopicOwner.UserAccessToken;
 
 // List chat threads.
 var communicationTokenCredential = new CommunicationTokenCredential(userAccessTokenForChat);
@@ -34,9 +37,18 @@ while (true)
 
     if (input == "new")
     {
-        var microsoftTeamsChatInteroperability = new MicrosoftTeamsChatInteroperability(acsEndpointUrl, userAccessTokenForChat);
-        await microsoftTeamsChatInteroperability.CreateChatThreadAsync("Microsoft Teams 1");
-        microsoftTeamsChatInteroperability.AddMicrosoftTeamsUserToChatThread("f5dafc5a-5906-4a2c-a185-d487c184c1f3", "Adele Vance");
+        var chatManager = new AcsChatManager(acsEndpointUrl, userAccessTokenForChat);
+        await chatManager.CreateChatThreadAsync("Microsoft Teams 2");
+        chatManager.AddMicrosoftTeamsUserToChatThread("f5dafc5a-5906-4a2c-a185-d487c184c1f3", 
+            "Adele Vance");
+        chatManager.AddUserToChatThread(CurrentCredentials.MattermostUser.AcsUser.UserId,
+            CurrentCredentials.MattermostUser.AcsUser.DisplayName);
+
+        chatManager.AddUserToChatThread(CurrentCredentials.WhatsAppUser.AcsUser.UserId,
+            CurrentCredentials.WhatsAppUser.AcsUser.DisplayName);
+
+        chatManager.AddUserToChatThread(CurrentCredentials.TelegramUser.AcsUser.UserId,
+            CurrentCredentials.TelegramUser.AcsUser.DisplayName);
 
         while (true)
         {
@@ -47,25 +59,33 @@ while (true)
                 continue;
             }
 
-            await microsoftTeamsChatInteroperability.SendMessageToChatThreadAsync(newMessage);
+            await chatManager.SendMessageToChatThreadAsync(newMessage);
         }
     }
 
-    if (list.Any(t => t.Id.Equals(input)))
+    if (list.Any(chatThreadItem => chatThreadItem.Id.Equals(input)))
     {
-        var microsoftTeamsChatInteroperability =
-            new MicrosoftTeamsChatInteroperability(acsEndpointUrl, userAccessTokenForChat);
-        microsoftTeamsChatInteroperability.ChangeChatThreadId(input);
+        var chatManager =
+            new AcsChatManager(acsEndpointUrl, userAccessTokenForChat);
+        chatManager.ChangeChatThreadId(input);
 
-        //microsoftTeamsChatInteroperability.AddUserToChatThread("8:acs:383d9c6a-d810-468d-ae7d-ae9fc100ca4c_00000023-c5f1-9d98-65f0-ad3a0d0056ee", "Mattermost User");
+        //chatManager.AddMicrosoftTeamsUserToChatThread("f5dafc5a-5906-4a2c-a185-d487c184c1f3", "Adele Vance");
+        //chatManager.AddUserToChatThread(CurrentCredentials.MattermostUser.AcsUser.UserId, 
+        //    CurrentCredentials.MattermostUser.AcsUser.DisplayName);
 
-        var participants = await microsoftTeamsChatInteroperability.ListParticipantsAsync();
+        //chatManager.AddUserToChatThread(CurrentCredentials.WhatsAppUser.AcsUser.UserId, 
+        //    CurrentCredentials.WhatsAppUser.AcsUser.DisplayName);
+
+        //chatManager.AddUserToChatThread(CurrentCredentials.TelegramUser.AcsUser.UserId,
+        //    CurrentCredentials.TelegramUser.AcsUser.DisplayName);
+
+        var participants = await chatManager.ListParticipantsAsync();
         foreach (var participant in participants)
         {
             Console.WriteLine($"{participant.User} {participant.DisplayName}");
         }
 
-        //await microsoftTeamsChatInteroperability.ListMessagesAsync();
+        await chatManager.ListMessagesAsync();
     }
 
     if (input == "exit")

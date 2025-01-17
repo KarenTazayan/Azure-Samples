@@ -4,13 +4,13 @@ using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace ACS.Chat;
 
-public class MicrosoftTeamsChatInteroperability
+public class AcsChatManager
 {
     private readonly ChatClient _chatClient;
     private string _chatThreadId = string.Empty;
     private readonly string _accessToken;
 
-    public MicrosoftTeamsChatInteroperability(string acsEndpointUrl, string userAccessTokenForChat)
+    public AcsChatManager(string acsEndpointUrl, string userAccessTokenForChat)
     {
         var acsEndpoint = new Uri(acsEndpointUrl);
         var communicationTokenCredential = new CommunicationTokenCredential(userAccessTokenForChat);
@@ -143,7 +143,10 @@ public class MicrosoftTeamsChatInteroperability
 
         await foreach (var item in list)
         {
-            participants.Add((item.User.ToString(), item.DisplayName)!);
+            if (item != null)
+            {
+                participants.Add((item.User.ToString(), item.DisplayName)!);
+            }
         }
 
         return participants;

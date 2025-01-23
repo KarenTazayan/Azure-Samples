@@ -39,4 +39,23 @@ app.MapPost("/", async (HttpContext context, ILogger<Program> logger) =>
     await context.Response.CompleteAsync();
 });
 
+app.MapPost("/slash", async (HttpContext context, ILogger<Program> logger) =>
+{
+    // TODO: Add MATTERMOST_TOKEN validation.
+    // https://developers.mattermost.com/integrate/webhooks/outgoing/
+
+    using var reader = new StreamReader(context.Request.Body, Encoding.UTF8);
+    var value = await reader.ReadToEndAsync();
+    logger.LogInformation(value);
+
+    var commandPayload = CommandPayloadParser.Parse(value);
+
+    Console.WriteLine($"From: {commandPayload.UserId} Message: {commandPayload.Text}");
+
+    await chatManager.SendMessageToChatThreadAsync(commandPayload.Text);
+
+    context.Response.StatusCode = 200;
+    await context.Response.CompleteAsync();
+});
+
 app.Run();

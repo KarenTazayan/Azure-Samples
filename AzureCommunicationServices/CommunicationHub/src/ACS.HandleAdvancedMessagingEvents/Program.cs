@@ -29,8 +29,8 @@ app.Use(async (context, next) =>
 {
     if (context.Request.Method == HttpMethods.Options)
     {
-        context.Response.Headers!.Add("Allow", "GET, POST");
-        context.Response.Headers!.Add("WebHook-Request-Origin", "*");
+        context.Response.Headers.Add("Allow", "GET, POST");
+        context.Response.Headers.Add("WebHook-Request-Origin", "*");
 
         context.Response.StatusCode = (int)HttpStatusCode.OK;
 
@@ -84,13 +84,6 @@ app.Map("/handler/event-grid", async (HttpContext context, ILogger<Program> logg
             PropertyNameCaseInsensitive = true
         });
 
-        //var participants = await microsoftTeamsChatInteroperability.ListParticipantsAsync();
-
-        //if (!participants.Any(p => advancedMessage.From.Equals(p.DisplayName)))
-        //{
-        //    microsoftTeamsChatInteroperability.AddUserToChatThread(advancedMessage.From);
-        //}
-
         Console.WriteLine($"Received message: {advancedMessage.Content} from chat {advancedMessage.From}");
         await microsoftTeamsChatInteroperability.SendMessageToChatThreadAsync(advancedMessage.Content);
 
@@ -134,17 +127,15 @@ app.Map("/handler/event-grid", async (HttpContext context, ILogger<Program> logg
             var botToken = CurrentCredentials.TelegramBotToken;
             var botClient = new TelegramBotClient(botToken);
 
-            await botClient.SendMessage(
-                chatId: "7849784244",
-                text: messageText);
+            await botClient.SendMessage(chatId: "xxx", text: messageText);
         }
 
         if (CurrentCredentials.AcsUsers.Single(u => u.Type == "Mattermost User").UserId !=
             advancedMessage.SenderCommunicationIdentifier.RawId)
         {
-            string mattermostBaseUrl = "https://mattermost-sample.westeurope.cloudapp.azure.com";
-            string accessToken = "jqxpkmjrdinfur5k4fgnw9byyh";
-            string channelId = "p9zp4t3bsjn8pe3st8sof7w31e";
+            var mattermostBaseUrl = "https://xxx.westeurope.cloudapp.azure.com";
+            var accessToken = "";
+            var channelId = "";
 
             await MattermostApi.SendMessageToMattermost(mattermostBaseUrl, accessToken, channelId, messageText);
         }

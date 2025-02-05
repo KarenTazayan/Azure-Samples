@@ -1,0 +1,15 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@rendermode InteractiveServer
+
+<PageTitle>@ViewModel.Status</PageTitle>
+
+<h1>RenderInfo: @RendererInfo.Name</h1>
+
+<QuickGrid Items="@ViewModel.AllEmailEvents.AsQueryable()">
+    <PropertyColumn Property="@(p => p.EventDateTime)" />
+    <PropertyColumn Property="@(p => p.EventType)" />
+    <PropertyColumn Property="@(p => p.EventPayload)" />
+</QuickGrid>
+
+<button @onclick="LoadData">Load Data</button>

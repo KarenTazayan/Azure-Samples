@@ -1,0 +1,6 @@
+az group create --name rg-acs-email-events-handler-1 --location westeurope
+az deployment group create --resource-group rg-acs-email-events-handler-1 `
+    --template-file main.bicep `
+    --parameters acsName=acs-email-events-handler-1 `
+    dataLocation=europe systemTopicName=egst-acs-email-events-handler-1 `
+    sqlAdminPassword=''

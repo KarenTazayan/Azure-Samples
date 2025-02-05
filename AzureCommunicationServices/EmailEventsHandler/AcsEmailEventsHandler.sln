@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{763B44CF-BAE8-44E5-AA48-EAE296632046}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{AEF6BC80-27A6-4521-8FC1-966780A9036B}"
+	ProjectSection(SolutionItems) = preProject
+		deploy\main.azcli = deploy\main.azcli
+		deploy\main.bicep = deploy\main.bicep
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcsEmailEventsHandler.Engine", "src\AcsEmailEventsHandler.Engine\AcsEmailEventsHandler.Engine.csproj", "{17AEA412-BEA3-4FD5-88A1-D4923AE5DCBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcsEmailEventsHandler.WebApp", "src\AcsEmailEventsHandler.WebApp\AcsEmailEventsHandler.WebApp.csproj", "{58B3B58F-95CB-4B6D-8EFF-FC86A1881124}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acs.Chat", "src\Acs.Chat\Acs.Chat.csproj", "{B9A14D94-8F0D-4BAA-B56A-B29C3C7A5D78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcsEmailEventsHandler", "src\AcsEmailEventsHandler\AcsEmailEventsHandler.csproj", "{2532BB05-9C1E-47F2-9DCE-55FC1A0F61F5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17AEA412-BEA3-4FD5-88A1-D4923AE5DCBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17AEA412-BEA3-4FD5-88A1-D4923AE5DCBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17AEA412-BEA3-4FD5-88A1-D4923AE5DCBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17AEA412-BEA3-4FD5-88A1-D4923AE5DCBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58B3B58F-95CB-4B6D-8EFF-FC86A1881124}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58B3B58F-95CB-4B6D-8EFF-FC86A1881124}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58B3B58F-95CB-4B6D-8EFF-FC86A1881124}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58B3B58F-95CB-4B6D-8EFF-FC86A1881124}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9A14D94-8F0D-4BAA-B56A-B29C3C7A5D78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9A14D94-8F0D-4BAA-B56A-B29C3C7A5D78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9A14D94-8F0D-4BAA-B56A-B29C3C7A5D78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9A14D94-8F0D-4BAA-B56A-B29C3C7A5D78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2532BB05-9C1E-47F2-9DCE-55FC1A0F61F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2532BB05-9C1E-47F2-9DCE-55FC1A0F61F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2532BB05-9C1E-47F2-9DCE-55FC1A0F61F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2532BB05-9C1E-47F2-9DCE-55FC1A0F61F5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{17AEA412-BEA3-4FD5-88A1-D4923AE5DCBB} = {763B44CF-BAE8-44E5-AA48-EAE296632046}
+		{58B3B58F-95CB-4B6D-8EFF-FC86A1881124} = {763B44CF-BAE8-44E5-AA48-EAE296632046}
+		{B9A14D94-8F0D-4BAA-B56A-B29C3C7A5D78} = {763B44CF-BAE8-44E5-AA48-EAE296632046}
+		{2532BB05-9C1E-47F2-9DCE-55FC1A0F61F5} = {763B44CF-BAE8-44E5-AA48-EAE296632046}
+	EndGlobalSection
+EndGlobal

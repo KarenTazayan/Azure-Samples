@@ -1,15 +1,25 @@
 ﻿@page "/"
-@using Microsoft.AspNetCore.Components.QuickGrid
+
 @rendermode InteractiveServer
 
 <PageTitle>@ViewModel.Status</PageTitle>
 
-<h1>RenderInfo: @RendererInfo.Name</h1>
+<MudAppBar Elevation="1" Color="Color.Transparent">
+    <MudChip T="string" Color="Color.Info">Email Events</MudChip>
+    <MudChip T="string" Color="Color.Info">Total Rows: @ViewModel.TotalRowsCount</MudChip>
+</MudAppBar>
 
-<QuickGrid Items="@ViewModel.AllEmailEvents.AsQueryable()">
-    <PropertyColumn Property="@(p => p.EventDateTime)" />
-    <PropertyColumn Property="@(p => p.EventType)" />
-    <PropertyColumn Property="@(p => p.EventPayload)" />
-</QuickGrid>
+@* RenderInfo: @RendererInfo.Name *@
 
-<button @onclick="LoadData">Load Data</button>
+<MudDataGrid T="EmailEvent" ServerData="ServerData"
+             FixedHeader="true" Height="650px" ItemSize="25"
+             Filterable="true">
+    <Columns>
+        <PropertyColumn Property="p => p.EventDateTime" />
+        <PropertyColumn Property="p => p.EventType" />
+        <PropertyColumn Property="p => p.EventPayload" />
+    </Columns>
+    <PagerContent>
+        <MudDataGridPager T="EmailEvent" />
+    </PagerContent>
+</MudDataGrid>

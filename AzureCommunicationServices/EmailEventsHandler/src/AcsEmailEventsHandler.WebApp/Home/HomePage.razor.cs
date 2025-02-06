@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace AcsEmailEventsHandler.WebApp.Home;
 
@@ -12,8 +14,14 @@ public partial class HomePage
         await ViewModel.InitializeAsync();
     }
 
-    private async Task LoadData()
+    private async Task<GridData<EmailEvent>> ServerData(GridState<EmailEvent> gridState)
     {
-        await ViewModel.LoadDataAsync();
+        await ViewModel.LoadDataAsync(gridState.Page, gridState.PageSize);
+
+        return new GridData<EmailEvent>
+        {
+            Items = ViewModel.AllEmailEvents,
+            TotalItems = ViewModel.TotalRowsCount
+        }; ;
     }
 }

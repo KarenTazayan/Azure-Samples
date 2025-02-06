@@ -14,7 +14,7 @@ public class SqlDatabaseInitializer(string connectionString)
                             CREATE TABLE EmailEvents (
                                 EventDateTime DATETIME NOT NULL,
                                 EventType NVARCHAR(100) NOT NULL,
-                                EventPayload NVARCHAR(MAX) NOT NULL
+                                EventPayload JSON NOT NULL
                             )
                         END";
 

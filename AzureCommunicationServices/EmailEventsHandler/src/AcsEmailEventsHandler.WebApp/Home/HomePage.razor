@@ -1,8 +1,9 @@
 ﻿@page "/"
+@using System.Text.Json
 
 @rendermode InteractiveServer
 
-<PageTitle>@ViewModel.Status</PageTitle>
+<PageTitle>Email Events</PageTitle>
 
 <MudAppBar Elevation="1" Color="Color.Transparent">
     <MudChip T="string" Color="Color.Info">Email Events</MudChip>
@@ -15,10 +16,16 @@
              FixedHeader="true" Height="650px" ItemSize="25"
              Filterable="true">
     <Columns>
+        <HierarchyColumn T="EmailEvent"></HierarchyColumn>
         <PropertyColumn Property="p => p.EventDateTime" />
         <PropertyColumn Property="p => p.EventType" />
         <PropertyColumn Property="p => p.EventPayload" />
     </Columns>
+    <ChildRowContent>
+        <pre>
+            @JsonSerializer.Serialize(JsonDocument.Parse(context.Item.EventPayload).RootElement, new JsonSerializerOptions() { WriteIndented = true })
+            </pre>
+    </ChildRowContent>
     <PagerContent>
         <MudDataGridPager T="EmailEvent" />
     </PagerContent>

@@ -1,4 +1,4 @@
-﻿using CSharpFunctionalExtensions;
+﻿using AcsEmailEventsHandler.WebApp.Common;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -16,12 +16,14 @@ public partial class HomePage
 
     private async Task<GridData<EmailEvent>> ServerData(GridState<EmailEvent> gridState)
     {
-        await ViewModel.LoadDataAsync(gridState.Page, gridState.PageSize);
+        var dynamicSqlQuery = GridStateQueryParser.ParseGridStateToSql(gridState);
+
+        await ViewModel.LoadDataAsync(dynamicSqlQuery, gridState.Page, gridState.PageSize);
 
         return new GridData<EmailEvent>
         {
             Items = ViewModel.AllEmailEvents,
             TotalItems = ViewModel.TotalRowsCount
-        }; ;
+        };
     }
 }

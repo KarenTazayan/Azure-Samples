@@ -29,7 +29,11 @@ if (string.IsNullOrWhiteSpace(azureSqlConnectionString))
     throw new InvalidOperationException("Environment variable 'AZURE_SQL_CONNECTION_STRING' is missing.");
 }
 
-builder.Services.AddScoped(_ => new EmailEventsRepository(azureSqlConnectionString));
+builder.Services.AddScoped(services =>
+{
+    var logger = services.GetRequiredService<ILogger<EmailEventsRepository>>();
+    return new EmailEventsRepository(azureSqlConnectionString, logger);
+});
 
 // Home
 builder.Services.AddScoped<HomePageViewModel>();

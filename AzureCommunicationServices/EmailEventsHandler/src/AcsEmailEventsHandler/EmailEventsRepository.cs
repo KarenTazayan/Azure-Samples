@@ -75,16 +75,17 @@ public class EmailEventsRepository
 
         try
         {
-            await using var cmd = new SqlCommand(sqlCommandText, sqlConnection);
+            await using var sqlCommand = new SqlCommand(sqlCommandText, sqlConnection);
 
-            cmd.Parameters.Add("@Offset", SqlDbType.Int).Value = pageNumber * pageSize;
-            cmd.Parameters.Add("@PageSize", SqlDbType.Int).Value = pageSize;
-            cmd.Parameters.AddRange(dynamicSqlQuery.Parameters.ToArray());
+            sqlCommand.Parameters.Add("@Offset", SqlDbType.Int).Value = pageNumber * pageSize;
+            sqlCommand.Parameters.Add("@PageSize", SqlDbType.Int).Value = pageSize;
+            sqlCommand.Parameters.AddRange(dynamicSqlQuery.Parameters.ToArray());
+            sqlCommand.CommandTimeout = 120;
 
             var list = new List<EmailEvent>();
             var totalCount = 0;
 
-            await using var reader = await cmd.ExecuteReaderAsync();
+            await using var reader = await sqlCommand.ExecuteReaderAsync();
 
             // Read the paginated results
             while (await reader.ReadAsync())

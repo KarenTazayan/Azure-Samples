@@ -15,7 +15,9 @@ public class GridStateQueryParser
         // Handle Filtering
         foreach (var filter in gridState.FilterDefinitions)
         {
-            var columnName = filter.Column.PropertyName;
+            var columnName = filter.Column?.PropertyName;
+            //if (string.IsNullOrWhiteSpace(columnName)) continue;
+
             var parameterName = $"@p{paramIndex++}";
 
             // Check filter type

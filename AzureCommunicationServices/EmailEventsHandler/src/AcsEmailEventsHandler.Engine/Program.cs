@@ -20,7 +20,12 @@ if (string.IsNullOrWhiteSpace(azureSqlConnectionString))
 var sqlDatabaseInitializer = new SqlDatabaseInitializer(azureSqlConnectionString);
 sqlDatabaseInitializer.Init();
 
-builder.Services.AddScoped<EmailEventsRepository>(_ => new EmailEventsRepository(azureSqlConnectionString));
+builder.Services.AddScoped(services =>
+{
+    var logger = services.GetRequiredService<ILogger<EmailEventsRepository>>();
+    return new EmailEventsRepository(azureSqlConnectionString, logger);
+});
+
 var app = builder.Build();
 
 // Endpoint validation with CloudEvents v1.0

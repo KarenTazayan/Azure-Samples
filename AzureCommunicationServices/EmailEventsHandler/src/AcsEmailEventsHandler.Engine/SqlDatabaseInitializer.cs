@@ -12,7 +12,7 @@ public class SqlDatabaseInitializer(string connectionString)
                         IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'EmailEvents')
                         BEGIN
                             CREATE TABLE EmailEvents (
-                                EventDateTime DATETIME NOT NULL,
+                                EventDateTime DATETIME2 NOT NULL,
                                 EventType NVARCHAR(100) NOT NULL,
                                 EventPayload JSON NOT NULL
                             )

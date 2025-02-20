@@ -9,11 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CloudNative.CloudEvents" Version="2.8.0" />
-    <PackageReference Include="CloudNative.CloudEvents.SystemTextJson" Version="2.8.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\AcsEmailEventsHandler\AcsEmailEventsHandler.csproj" />
   </ItemGroup>
 

@@ -1,8 +1,6 @@
-using CloudNative.CloudEvents.SystemTextJson;
-using System.Net;
-using System.Text;
 using AcsEmailEventsHandler;
 using AcsEmailEventsHandler.Engine;
+using System.Net;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
@@ -20,6 +18,7 @@ if (string.IsNullOrWhiteSpace(azureSqlConnectionString))
 var sqlDatabaseInitializer = new SqlDatabaseInitializer(azureSqlConnectionString);
 sqlDatabaseInitializer.Init();
 
+builder.Services.AddScoped<CloudEventHandler>();
 builder.Services.AddScoped(services =>
 {
     var logger = services.GetRequiredService<ILogger<EmailEventsRepository>>();
@@ -64,21 +63,25 @@ app.Use(async (context, next) =>
 
 app.MapGet("/", () => "Working...");
 
-app.Map("/handler/event-grid", async (HttpContext context, 
-    EmailEventsRepository r, ILogger <Program> logger) =>
+app.Map("/handler/event-grid", async (HttpContext context,
+    CloudEventHandler cloudEventHandler, ILogger<Program> logger) =>
 {
-    using var reader = new StreamReader(context.Request.Body, Encoding.UTF8);
-    var body = await reader.ReadToEndAsync();
+    await using var memoryStream = new MemoryStream();
+    await context.Request.Body.CopyToAsync(memoryStream);
+    var body = memoryStream.ToArray().AsMemory();
+
     logger.LogInformation("Received event.");
 
-    // Deserialize the JSON string into a CloudEvent
-    var formatter = new JsonEventFormatter();
-    var cloudEvent = formatter.DecodeStructuredModeMessage(Encoding.UTF8.GetBytes(body).AsMemory(),
-        null, null);
+    var result = await cloudEventHandler.Handle(body);
 
-    r.Insert(new EmailEvent(DateTime.UtcNow, cloudEvent.Type, cloudEvent.Data.ToString()));
+    if (result.IsFailure)
+    {
+        // TODO: Log error
+        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        return;
+    }
 
-    logger.LogInformation($"Event Type: {cloudEvent.Type}");
+    logger.LogInformation("Event handled successfully.");
     context.Response.StatusCode = (int)HttpStatusCode.OK;
 });
 

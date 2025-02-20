@@ -21,18 +21,18 @@ public class EmailEventsRepository
         _logger = logger;
     }
 
-    public void Insert(EmailEvent emailEvent)
+    public async Task Insert(EmailEvent emailEvent)
     {
-        using var connection = new SqlConnection(_connectionString);
+        await using var connection = new SqlConnection(_connectionString);
         connection.Open();
 
-        using var command = new SqlCommand("INSERT INTO EmailEvents (EventDateTime, EventType, EventPayload) VALUES (@EventDateTime, @EventType, @EventPayload)", connection);
+        await using var command = new SqlCommand("INSERT INTO EmailEvents (EventDateTime, EventType, EventPayload) VALUES (@EventDateTime, @EventType, @EventPayload)", connection);
 
         command.Parameters.AddWithValue("@EventDateTime", emailEvent.EventDateTime);
         command.Parameters.AddWithValue("@EventType", emailEvent.EventType);
         command.Parameters.AddWithValue("@EventPayload", emailEvent.EventPayload);
 
-        command.ExecuteNonQuery();
+        await command.ExecuteNonQueryAsync();
     }
 
     public async IAsyncEnumerable<EmailEvent> GetEvents(bool formatJson = false)

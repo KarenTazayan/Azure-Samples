@@ -8,6 +8,9 @@
 <MudAppBar Elevation="1" Color="Color.Transparent">
     <MudChip T="string" Color="Color.Info">Email Events</MudChip>
     <MudChip T="string" Color="Color.Info">Total Rows: @ViewModel.TotalRowsCount</MudChip>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OpenEventPayloadFilterDialog">
+        Event Payload AI Filter: @(ViewModel.IsAiFilterApplied ? "Yes": "No")
+    </MudButton>
 </MudAppBar>
 
 @* RenderInfo: @RendererInfo.Name *@
@@ -19,7 +22,7 @@
         <HierarchyColumn T="EmailEvent"></HierarchyColumn>
         <PropertyColumn Property="p => p.EventDateTime" />
         <PropertyColumn Property="p => p.EventType" />
-        <PropertyColumn Property="p => p.EventPayload" />
+        <PropertyColumn Property="p => p.EventPayload" Filterable="false" Sortable="false" />
     </Columns>
     <ChildRowContent>
         <pre>
@@ -30,3 +33,36 @@
         <MudDataGridPager T="EmailEvent" />
     </PagerContent>
 </MudDataGrid>
+
+<MudDialog @bind-Visible="ViewModel.IsEventPayloadFilterVisible">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Filter" Class="mr-3" />Event Payload AI Filter
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudChat ChatPosition="ChatBubblePosition.Start">
+            @foreach (var response in ViewModel.AiResponses)
+            {
+                <MudChatBubble>
+                    @response
+                </MudChatBubble>
+            }
+        </MudChat>
+        <MudChat ChatPosition="ChatBubblePosition.End">
+            <MudChatBubble>
+                You underestimate my power!
+            </MudChatBubble>
+        </MudChat>
+        <MudTextField @bind-Value="@ViewModel.EventPayloadFilterValue" Label="Please type..." Variant="Variant.Text">
+        </MudTextField>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ApplyEventPayloadFilter" Class="px-10">
+            Apply
+        </MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CloseEventPayloadFilterDialog" Class="px-10">
+            Close
+        </MudButton>
+    </DialogActions>
+</MudDialog>

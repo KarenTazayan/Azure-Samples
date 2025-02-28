@@ -4,6 +4,8 @@ using System.Net;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
     //options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
@@ -26,6 +28,8 @@ builder.Services.AddScoped(services =>
 });
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 // Endpoint validation with CloudEvents v1.0
 // https://learn.microsoft.com/en-us/azure/event-grid/end-point-validation-cloud-events-schema

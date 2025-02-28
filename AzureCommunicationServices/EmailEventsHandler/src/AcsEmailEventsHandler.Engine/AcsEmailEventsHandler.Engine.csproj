@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AcsEmailEventsHandler.ServiceDefaults\AcsEmailEventsHandler.ServiceDefaults.csproj" />
     <ProjectReference Include="..\AcsEmailEventsHandler\AcsEmailEventsHandler.csproj" />
   </ItemGroup>
 

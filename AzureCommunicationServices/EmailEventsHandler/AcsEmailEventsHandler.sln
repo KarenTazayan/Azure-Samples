@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcsEmailEventsHandler", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acs.EmailSender", "src\Acs.EmailSender\Acs.EmailSender.csproj", "{4B9CF772-1A82-4B7D-AA62-61B3A339D7FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcsEmailEventsHandler.AppHost", "src\AcsEmailEventsHandler.AppHost\AcsEmailEventsHandler.AppHost.csproj", "{B4365D86-7D12-4154-A890-58E3457BC289}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcsEmailEventsHandler.ServiceDefaults", "src\AcsEmailEventsHandler.ServiceDefaults\AcsEmailEventsHandler.ServiceDefaults.csproj", "{A1958B6A-FCA9-0AB3-EF13-6C9B02296310}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +51,14 @@ Global
 		{4B9CF772-1A82-4B7D-AA62-61B3A339D7FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B9CF772-1A82-4B7D-AA62-61B3A339D7FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B9CF772-1A82-4B7D-AA62-61B3A339D7FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4365D86-7D12-4154-A890-58E3457BC289}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4365D86-7D12-4154-A890-58E3457BC289}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4365D86-7D12-4154-A890-58E3457BC289}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4365D86-7D12-4154-A890-58E3457BC289}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1958B6A-FCA9-0AB3-EF13-6C9B02296310}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1958B6A-FCA9-0AB3-EF13-6C9B02296310}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1958B6A-FCA9-0AB3-EF13-6C9B02296310}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1958B6A-FCA9-0AB3-EF13-6C9B02296310}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,5 +69,8 @@ Global
 		{B9A14D94-8F0D-4BAA-B56A-B29C3C7A5D78} = {763B44CF-BAE8-44E5-AA48-EAE296632046}
 		{2532BB05-9C1E-47F2-9DCE-55FC1A0F61F5} = {763B44CF-BAE8-44E5-AA48-EAE296632046}
 		{4B9CF772-1A82-4B7D-AA62-61B3A339D7FE} = {763B44CF-BAE8-44E5-AA48-EAE296632046}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6D8335C8-0983-410D-9653-7A675F1ADB8E}
 	EndGlobalSection
 EndGlobal

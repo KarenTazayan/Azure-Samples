@@ -16,6 +16,9 @@ public class SqlDatabaseInitializer(string connectionString)
                                 EventType NVARCHAR(100) NOT NULL,
                                 EventPayload JSON NOT NULL
                             )
+                            
+                            CREATE INDEX IDX_EmailEvents_EventDateTime
+                            ON dbo.EmailEvents (EventDateTime DESC)
                         END";
 
         using var command = new SqlCommand(checkTableQuery, connection);

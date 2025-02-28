@@ -2,10 +2,19 @@ using AcsEmailEventsHandler;
 using AcsEmailEventsHandler.WebApp.Common;
 using AcsEmailEventsHandler.WebApp.Components;
 using AcsEmailEventsHandler.WebApp.Home;
+using Microsoft.SemanticKernel;
 using MudBlazor;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
+
+// Semantic Kernel
+builder.Services.AddKernel().AddAzureOpenAIChatCompletion("gpt-4o-mini", 
+    "https://xxx.openai.azure.com/",
+    "");
+builder.Services.AddTransient<NlQueryParser>();
 
 // Add services to the container.
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
@@ -39,6 +48,8 @@ builder.Services.AddScoped(services =>
 builder.Services.AddScoped<HomePageViewModel>();
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

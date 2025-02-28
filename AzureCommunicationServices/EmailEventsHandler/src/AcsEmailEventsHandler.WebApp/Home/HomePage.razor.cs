@@ -14,6 +14,21 @@ public partial class HomePage
         await ViewModel.InitializeAsync();
     }
 
+    private void OpenEventPayloadFilterDialog()
+    {
+        ViewModel.IsEventPayloadFilterVisible = true;
+    }
+
+    private void CloseEventPayloadFilterDialog()
+    {
+        ViewModel.IsEventPayloadFilterVisible = false;
+    }
+
+    private async Task ApplyEventPayloadFilter()
+    {
+        await ViewModel.ParseNlQueryToSqlAsync(ViewModel.EventPayloadFilterValue);
+    }
+
     private async Task<GridData<EmailEvent>> ServerData(GridState<EmailEvent> gridState)
     {
         var dynamicSqlQuery = GridStateQueryParser.ParseGridStateToSql(gridState);

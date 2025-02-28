@@ -7,10 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MudBlazor" Version="8.2.0" />
+    <PackageReference Include="Microsoft.SemanticKernel" Version="1.39.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.PromptTemplates.Liquid" Version="1.38.0-preview" />
+    <PackageReference Include="MudBlazor" Version="8.3.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AcsEmailEventsHandler.ServiceDefaults\AcsEmailEventsHandler.ServiceDefaults.csproj" />
     <ProjectReference Include="..\AcsEmailEventsHandler\AcsEmailEventsHandler.csproj" />
   </ItemGroup>
 

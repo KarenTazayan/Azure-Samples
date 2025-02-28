@@ -1,17 +1,16 @@
 ﻿using MudBlazor;
 
-namespace AcsEmailEventsHandler.WebApp.Common
-{
-    public interface INotificationService
-    {
-        public void Show(string message);
-    }
+namespace AcsEmailEventsHandler.WebApp.Common;
 
-    public class NotificationService(ISnackbar snackbar) : INotificationService
+public interface INotificationService
+{
+    public void Show(string message);
+}
+
+public class NotificationService(ISnackbar bar) : INotificationService
+{
+    public void Show(string message)
     {
-        public void Show(string message)
-        {
-            snackbar.Add(message, Severity.Info);
-        }
+        bar.Add(message, Severity.Info);
     }
 }

@@ -10,7 +10,8 @@ public class GridStateQueryParser
     {
         var whereClauses = new List<string>();
         var parameters = new List<SqlParameter>();
-        int paramIndex = 0; // Ensures unique parameter names
+        // Ensures unique parameter names
+        var paramIndex = 0; 
 
         // Handle Filtering
         foreach (var filter in gridState.FilterDefinitions)
@@ -135,5 +136,4 @@ public class GridStateQueryParser
 
         return new DynamicSqlQuery(whereClause, orderByClause, parameters);
     }
-
 }

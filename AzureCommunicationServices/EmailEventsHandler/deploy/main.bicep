@@ -1,20 +1,8 @@
-param nameSuffix string = 'd1'
-param appNamePrefix string ='acsemailevents'
-
-@description('Name of the Azure Communication Service.')
-param acsName string
-
-@description('Location for the Azure Communication Service.')
-param location string = 'global'
+param nameSuffix string = '1'
+param appNamePrefix string ='samples'
 
 @description('Data location for the Azure Communication Service.')
 param dataLocation string
-
-@description('Name of the Event Grid system topic.')
-param systemTopicName string
-
-@description('Name of the SQL server.')
-param sqlServerName string = 'sql-${appNamePrefix}-${nameSuffix}'
 
 @description('Administrator username for the SQL server.')
 param sqlAdminUsername string = 'a1'
@@ -23,8 +11,20 @@ param sqlAdminUsername string = 'a1'
 @secure()
 param sqlAdminPassword string
 
+@description('Name of the Azure Communication Service.')
+var acsName = 'acs-${appNamePrefix}-${nameSuffix}'
+
+@description('Location for the Azure Communication Service.')
+var location = 'global'
+
+@description('Name of the Event Grid system topic.')
+var systemTopicName = 'egst-acs-${appNamePrefix}-${nameSuffix}'
+
+@description('Name of the SQL server.')
+var sqlServerName = 'sql-acs-${appNamePrefix}-${nameSuffix}'
+
 @description('Name of the SQL database.')
-param sqlDatabaseName string = 'AcsEmailEvents'
+var sqlDatabaseName = 'AcsEmailEvents'
 
 resource communicationService 'Microsoft.Communication/communicationServices@2023-06-01-preview' = {
   name: acsName

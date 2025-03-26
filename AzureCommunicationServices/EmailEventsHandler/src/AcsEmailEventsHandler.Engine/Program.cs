@@ -2,6 +2,8 @@ using AcsEmailEventsHandler;
 using AcsEmailEventsHandler.Engine;
 using System.Net;
 
+Console.Title = nameof(AcsEmailEventsHandler.Engine);
+
 var builder = WebApplication.CreateSlimBuilder(args);
 
 builder.AddServiceDefaults();
@@ -80,7 +82,7 @@ app.Map("/handler/event-grid", async (HttpContext context,
 
     if (result.IsFailure)
     {
-        // TODO: Log error
+        logger.LogInformation(result.Error);
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
         return;
     }

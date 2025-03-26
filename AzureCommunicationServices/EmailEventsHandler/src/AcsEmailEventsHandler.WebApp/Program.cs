@@ -6,14 +6,17 @@ using Microsoft.SemanticKernel;
 using MudBlazor;
 using MudBlazor.Services;
 
+Console.Title = nameof(AcsEmailEventsHandler.WebApp);
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
 // Semantic Kernel
-builder.Services.AddKernel().AddAzureOpenAIChatCompletion("gpt-4o-mini", 
+builder.Services.AddKernel().AddAzureOpenAIChatCompletion("gpt-4o-mini",
     "https://xxx.openai.azure.com/",
     "");
+
 builder.Services.AddTransient<NlQueryParser>();
 
 // Add services to the container.

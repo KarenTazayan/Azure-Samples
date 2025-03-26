@@ -33,6 +33,7 @@ public class CloudEventHandler(ILogger<CloudEventHandler> logger, EmailEventsRep
 
     private async Task<Result> HandleEmailEvent(CloudEvent cloudEvent)
     {
+        logger.LogInformation($"[{DateTime.Now.ToLongTimeString()}] Handling email event: {cloudEvent.Type}");
         var emailEvent = new EmailEvent(DateTime.UtcNow, cloudEvent.Type!, cloudEvent.Data!.ToString()!);
 
         try

@@ -1,0 +1,1 @@
+az acr repository show --name 'name' --image 'image'

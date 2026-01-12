@@ -1,6 +1,9 @@
 ﻿// Quickstart: Send WhatsApp messages using Advanced Messages
 // https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/advanced-messaging/whatsapp/get-started?tabs=visual-studio%2Cconnection-string&pivots=programming-language-csharp
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using ACS.Chat;
 using Azure;
 using Azure.Communication.Messages;

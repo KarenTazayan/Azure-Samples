@@ -2,7 +2,7 @@
 // https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/chat/quickstart-botframework-integration
 
 // Enable interoperability in your Teams tenant
-// https://learn.microsoft.com/en-us/azure/communication-services/concepts/interop/calling-chat
+// https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/voice-video-calling/get-started-teams-interop-group-calls
 
 using ACS.Chat;
 using Azure.Communication;
@@ -38,17 +38,17 @@ while (true)
     if (input == "new")
     {
         var chatManager = new AcsChatManager(acsEndpointUrl, userAccessTokenForChat);
-        await chatManager.CreateChatThreadAsync("Microsoft Teams 2");
-        chatManager.AddMicrosoftTeamsUserToChatThread("f5dafc5a-5906-4a2c-a185-d487c184c1f3", 
+        await chatManager.CreateChatThreadAsync("Microsoft Teams 1");
+        chatManager.AddMicrosoftTeamsUserToChatThread("79255080-8f54-44cf-a886-bcca226edefc", 
             "Adele Vance");
-        chatManager.AddUserToChatThread(CurrentCredentials.MattermostUser.AcsUser.UserId,
-            CurrentCredentials.MattermostUser.AcsUser.DisplayName);
+        //chatManager.AddUserToChatThread(CurrentCredentials.MattermostUser.AcsUser.UserId,
+        //    CurrentCredentials.MattermostUser.AcsUser.DisplayName);
 
-        chatManager.AddUserToChatThread(CurrentCredentials.WhatsAppUser.AcsUser.UserId,
-            CurrentCredentials.WhatsAppUser.AcsUser.DisplayName);
+        //chatManager.AddUserToChatThread(CurrentCredentials.WhatsAppUser.AcsUser.UserId,
+        //    CurrentCredentials.WhatsAppUser.AcsUser.DisplayName);
 
-        chatManager.AddUserToChatThread(CurrentCredentials.TelegramUser.AcsUser.UserId,
-            CurrentCredentials.TelegramUser.AcsUser.DisplayName);
+        //chatManager.AddUserToChatThread(CurrentCredentials.TelegramUser.AcsUser.UserId,
+        //    CurrentCredentials.TelegramUser.AcsUser.DisplayName);
 
         while (true)
         {
@@ -73,8 +73,8 @@ while (true)
         //chatManager.AddUserToChatThread(CurrentCredentials.MattermostUser.AcsUser.UserId, 
         //    CurrentCredentials.MattermostUser.AcsUser.DisplayName);
 
-        //chatManager.AddUserToChatThread(CurrentCredentials.WhatsAppUser.AcsUser.UserId, 
-        //    CurrentCredentials.WhatsAppUser.AcsUser.DisplayName);
+        chatManager.AddUserToChatThread(CurrentCredentials.WhatsAppUser.AcsUser.UserId, 
+            CurrentCredentials.WhatsAppUser.AcsUser.DisplayName);
 
         //chatManager.AddUserToChatThread(CurrentCredentials.TelegramUser.AcsUser.UserId,
         //    CurrentCredentials.TelegramUser.AcsUser.DisplayName);

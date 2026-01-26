@@ -1,13 +1,13 @@
 // https://learn.microsoft.com/en-us/javascript/api/overview/azure/communication-chat-readme?view=azure-node-latest
 
-import { ChatClient } from '@azure/communication-chat';
-import { AzureCommunicationTokenCredential } from "@azure/communication-common";
+const { ChatClient } = require("@azure/communication-chat");
+const { AzureCommunicationTokenCredential } = require("@azure/communication-common");
 
-const endpointUrl = "https://teamsskypehub.europe.communication.azure.com/";
+const endpointUrl = "https://acs-samples-1.germany.communication.azure.com/";
 // Replace with the ACS token generated from the portal or backend
 const userAccessToken = "";
 // Replace with the chat thread ID created in ACS
-const threadId = "19:acsV1_FMzNYYbqdP1Yb-SQ420xdOcyQNRc5CiN9xDnMHjtSvM1@thread.v2";
+const threadId = "19:acsV2_qE3B8P12hpNRPsvkAFYHaIMt8jD4jwTw9x7vDbdU53g1@thread.v2";
 
 let chatClient, chatThreadClient;
 
@@ -23,15 +23,15 @@ async function initializeChatClient() {
         console.log("Notification chatMessageReceived!");
         // your code here
 
-        if(e.sender.communicationUserId === "8:acs:383d9c6a-d810-468d-ae7d-ae9fc100ca4c_00000023-ab0c-29fe-0586-af3a0d003caa") {
+        if(e.sender.communicationUserId === "8:acs:f868eba8-f743-418f-9417-6b9c764c500c_0000002c-65e5-3398-7caf-f4bd45602ccc") {
             displayMessage("WhatsApp User +***591", e.message);
         }
-        else if(e.sender.communicationUserId === "8:acs:383d9c6a-d810-468d-ae7d-ae9fc100ca4c_00000023-ab22-8667-f5f4-ad3a0d001344") {
+        else if(e.sender.communicationUserId === "8:acs:f868eba8-f743-418f-9417-6b9c764c500c_0000002c-65e4-da4f-7caf-f4bd45602cae") {
             displayMessage("Telegram User Karen T", e.message);
         }
-        else if(e.sender.communicationUserId === "8:acs:383d9c6a-d810-468d-ae7d-ae9fc100ca4c_00000023-c5f1-9d98-65f0-ad3a0d0056ee") {
-            displayMessage("Mattermost User john_smith", e.message);
-        }
+        // else if(e.sender.communicationUserId === "8:acs:383d9c6a-d810-468d-ae7d-ae9fc100ca4c_00000023-c5f1-9d98-65f0-ad3a0d0056ee") {
+        //     displayMessage("Mattermost User john_smith", e.message);
+        // }
         else
         {
             displayMessage(e.senderDisplayName, e.message);
@@ -62,7 +62,7 @@ async function sendMessage() {
 
     if (message) {
         await chatThreadClient.sendMessage({ content: message });
-        displayMessage("You", message);
+        //displayMessage("You", message);
         messageInput.value = "";
     }
 }

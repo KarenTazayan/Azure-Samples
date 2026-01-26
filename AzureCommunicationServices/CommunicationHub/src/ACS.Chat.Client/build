@@ -1,1 +1,4 @@
-webpack --mode=development
+npm init -y
+npm i @azure/communication-chat @azure/communication-common
+npm i -D webpack webpack-cli webpack-dev-server
+npm run serve

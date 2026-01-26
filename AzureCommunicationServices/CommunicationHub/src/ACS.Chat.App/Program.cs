@@ -4,6 +4,8 @@
 // Enable interoperability in your Teams tenant
 // https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/voice-video-calling/get-started-teams-interop-group-calls
 
+using System;
+using System.Linq;
 using ACS.Chat;
 using Azure.Communication;
 using Azure.Communication.Chat;
@@ -41,14 +43,15 @@ while (true)
         await chatManager.CreateChatThreadAsync("Microsoft Teams 1");
         chatManager.AddMicrosoftTeamsUserToChatThread("79255080-8f54-44cf-a886-bcca226edefc", 
             "Adele Vance");
+
         //chatManager.AddUserToChatThread(CurrentCredentials.MattermostUser.AcsUser.UserId,
         //    CurrentCredentials.MattermostUser.AcsUser.DisplayName);
 
-        //chatManager.AddUserToChatThread(CurrentCredentials.WhatsAppUser.AcsUser.UserId,
-        //    CurrentCredentials.WhatsAppUser.AcsUser.DisplayName);
+        chatManager.AddUserToChatThread(CurrentCredentials.WhatsAppUser.AcsUser.UserId,
+            CurrentCredentials.WhatsAppUser.AcsUser.DisplayName);
 
-        //chatManager.AddUserToChatThread(CurrentCredentials.TelegramUser.AcsUser.UserId,
-        //    CurrentCredentials.TelegramUser.AcsUser.DisplayName);
+        chatManager.AddUserToChatThread(CurrentCredentials.TelegramUser.AcsUser.UserId,
+            CurrentCredentials.TelegramUser.AcsUser.DisplayName);
 
         while (true)
         {
@@ -76,8 +79,8 @@ while (true)
         chatManager.AddUserToChatThread(CurrentCredentials.WhatsAppUser.AcsUser.UserId, 
             CurrentCredentials.WhatsAppUser.AcsUser.DisplayName);
 
-        //chatManager.AddUserToChatThread(CurrentCredentials.TelegramUser.AcsUser.UserId,
-        //    CurrentCredentials.TelegramUser.AcsUser.DisplayName);
+        chatManager.AddUserToChatThread(CurrentCredentials.TelegramUser.AcsUser.UserId,
+            CurrentCredentials.TelegramUser.AcsUser.DisplayName);
 
         var participants = await chatManager.ListParticipantsAsync();
         foreach (var participant in participants)

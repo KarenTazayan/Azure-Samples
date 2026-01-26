@@ -1,24 +1,26 @@
 ﻿// Quickstart: Handle Advanced Messaging events
 // https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/advanced-messaging/whatsapp/handle-advanced-messaging-events
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using ACS.Chat;
 using ACS.HandleAdvancedMessagingEvents;
 using Azure;
 using Azure.Communication.Messages;
 using CloudNative.CloudEvents.SystemTextJson;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Telegram.Bot;
 
 Console.Title = "ACS.HandleAdvancedMessagingEvents";
-
-// Your unique Communication Services endpoint
-var acsEndpointUrl = CurrentCredentials.AcsCredential.AcsEndpointUrl;
-// Your unique ACS access token
-// WhatsApp User Access Token
-var userAccessTokenForChat = CurrentCredentials.WhatsAppUser.UserAccessToken;
-var acsChatThreadId = CurrentCredentials.AcsChatThreadId;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
@@ -57,7 +59,12 @@ app.Use(async (context, next) =>
     await next.Invoke();
 });
 
-app.MapGet("/", () => "Working...");
+// Your unique Communication Services endpoint
+var acsEndpointUrl = CurrentCredentials.AcsCredential.AcsEndpointUrl;
+// Your unique ACS access token
+// WhatsApp User Access Token
+var userAccessTokenForChat = CurrentCredentials.WhatsAppUser.UserAccessToken;
+var acsChatThreadId = CurrentCredentials.AcsChatThreadId;
 
 var microsoftTeamsChatInteroperability =
     new AcsChatManager(acsEndpointUrl, userAccessTokenForChat);
@@ -71,7 +78,7 @@ app.Map("/handler/event-grid", async (HttpContext context, ILogger<Program> logg
 
     // Deserialize the JSON string into a CloudEvent
     var formatter = new JsonEventFormatter();
-    var cloudEvent = formatter.DecodeStructuredModeMessage(Encoding.UTF8.GetBytes(body).AsMemory(), 
+    var cloudEvent = formatter.DecodeStructuredModeMessage(Encoding.UTF8.GetBytes(body).AsMemory(),
         null, null);
 
     logger.LogInformation($"Event Type: {cloudEvent.Type}");
@@ -127,18 +134,18 @@ app.Map("/handler/event-grid", async (HttpContext context, ILogger<Program> logg
             var botToken = CurrentCredentials.TelegramBotToken;
             var botClient = new TelegramBotClient(botToken);
 
-            await botClient.SendMessage(chatId: "xxx", text: messageText);
+            var response= await botClient.SendMessage(chatId: "7849784244", text: messageText);
         }
 
-        if (CurrentCredentials.AcsUsers.Single(u => u.Type == "Mattermost User").UserId !=
-            advancedMessage.SenderCommunicationIdentifier.RawId)
-        {
-            var mattermostBaseUrl = "https://xxx.westeurope.cloudapp.azure.com";
-            var accessToken = "";
-            var channelId = "";
+        //if (CurrentCredentials.AcsUsers.Single(u => u.Type == "Mattermost User").UserId !=
+        //    advancedMessage.SenderCommunicationIdentifier.RawId)
+        //{
+        //    var mattermostBaseUrl = "https://xxx.westeurope.cloudapp.azure.com";
+        //    var accessToken = "";
+        //    var channelId = "";
 
-            await MattermostApi.SendMessageToMattermost(mattermostBaseUrl, accessToken, channelId, messageText);
-        }
+        //    await MattermostApi.SendMessageToMattermost(mattermostBaseUrl, accessToken, channelId, messageText);
+        //}
 
         context.Response.StatusCode = (int)HttpStatusCode.OK;
         return;
@@ -146,5 +153,7 @@ app.Map("/handler/event-grid", async (HttpContext context, ILogger<Program> logg
 
     context.Response.StatusCode = (int)HttpStatusCode.OK;
 });
+
+app.MapGet("/", () => "Working...");
 
 app.Run();
